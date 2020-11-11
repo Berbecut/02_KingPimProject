@@ -1,0 +1,27 @@
+﻿@model CategoriesViewModel
+
+@foreach (var cat in Model.AllCategories)
+{<div>
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#@cat.Name" aria-expanded="true" aria-controls="collapseTwo">
+            <i class="fa fa-list-alt" aria-hidden="true"></i>
+            @cat.Name
+        </a>
+
+        <div id="@cat.Name" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Subcategories:</h6>
+
+                @foreach (var subCat in cat.SubCategories)
+                {
+                    <a class="collapse-item dropdown-item m-0 font-weight-bold text-info" asp-controller="Product" asp-action="Index" asp-route-subcategoryId="@subCat.Id">
+                        <span>@subCat.Name</span>
+                    </a>
+                }
+                <div class="dropdown-divider"></div>
+                <a asp-controller="Subcategories" asp-action="Index" asp-route-categoryid="@cat.Id" class="dropdown-item font-weight-bold text-success">All subcategories</a>
+
+            </div>
+        </div>
+
+    </div>
+}

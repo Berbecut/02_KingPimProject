@@ -1,0 +1,86 @@
+﻿@model EditProductViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="col-md-12">
+        <div class="form-area">
+            <form asp-route="EditProduct" method="post">
+                <input type="hidden" asp-for="Product.Id" />
+
+                <br style="clear:both">
+                <h3 style="margin-bottom: 25px; text-align: center;">Edit product @Model.Product.Name</h3>
+
+                <div class="form-group">
+                    <b> <label asp-for="Product.ArticleNumber">Product Number</label></b>
+                    <input class="form-control" asp-items="Model.ArticleNumber" asp-for="Product.ArticleNumber" />
+                </div>
+
+                <div class="form-group">
+                    <b> <label asp-for="Product.Name">Product Name</label></b>
+                    <input class="form-control" asp-items="Model.Name" asp-for="Product.Name" />
+                </div>
+
+                <div class="form-group">
+                    <b> <label asp-for="Product.Price">Product Price</label></b>
+                    <input class="form-control" asp-items="Model.Price" asp-for="Product.Price" />
+                </div>
+
+                <div class="form-group">
+                    <b> <label asp-for="Product.CampaignStartDate">Campaign Start Date</label></b>
+                    <input class="form-control" asp-items="Model.CampaignStartDate" asp-for="Product.CampaignStartDate" />
+                </div>
+
+                <div class="form-group">
+                    <b> <label asp-for="Product.CampaignEndDate">Campaign End Date</label></b>
+                    <input class="form-control" asp-items="Model.CampaignEndDate" asp-for="Product.CampaignEndDate" />
+                </div>
+
+                <div class="form-group">
+                    <b> <label asp-for="Product.DiscountPercentage">Discount Percentage</label></b>
+                    <input class="form-control" asp-items="Model.DiscountPercentage" asp-for="Product.DiscountPercentage" />
+                </div>
+
+                <div class="form-group">
+                    <b> <label asp-for="Product.Discontinued">Discontinued</label></b>
+                    <input class="form-control" asp-items="Model.Discontinued" asp-for="Product.Discontinued" />
+                </div>
+
+                <div class="form-group">
+                    <b> <label asp-for="Product.StockBalance">Stock Balance</label></b>
+                    <input class="form-control" asp-items="Model.StockBalance" asp-for="Product.StockBalance" />
+                </div>
+
+                <div class="form-group">
+                    <b> <label asp-for="Product.Width">Pack Width</label></b>
+                    <input class="form-control" asp-items="Model.Width" asp-for="Product.Width" />
+                </div>
+
+                <div class="form-group">
+                    <b> <label asp-for="Product.Depth">Pack Depth</label></b>
+                    <input class="form-control" asp-items="Model.Depth" asp-for="Product.Depth" />
+                </div>
+
+                <div class="form-group">
+                    <b> <label asp-for="Product.Height">Pack Height</label></b>
+                    <input class="form-control" asp-items="Model.Height" asp-for="Product.Height" />
+                </div>
+
+                <div class="form-group">
+                    <b> <label asp-for="Product.Weight">Pack Weight</label></b>
+                    <input class="form-control" asp-items="Model.Weight" asp-for="Product.Weight" />
+                </div>
+
+                <input type="hidden" value="@Model.SubCategoryId" name="SubcategoryId" />
+
+                    <button class="btn btn-primary btn-md" type="submit" name="save" value="Save">Save changes</button>
+                    &nbsp;&nbsp;
+                     
+                    <a asp-controller="Product" asp-action="Index" asp-route-subcategoryId="@Model.SubCategoryId" class="btn btn-warning btn-md">Cancel</a>
+                
+            </form>
+        </div>
+    </div>
+</div>

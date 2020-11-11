@@ -1,0 +1,225 @@
+﻿@model ProductsViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h4>
+                Products list in subcategory:
+                <span class="m-0 font-weight-bold text-info">@Model.SubCategory.Name</span>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a asp-controller="Subcategories" asp-action="Index" asp-route-categoryid="@Model.CategoryId" class="btn btn btn-outline-warning align-items-center">Back to Category</a>
+
+                <a class="btn btn-info btn btn-primary align-items-center float-right" asp-controller="Product" asp-action="CreateProduct" asp-route-subCategoryId="@Model.SubCategory.Id" title="Add a new product into this subcategory">Create new product</a>
+            </h4>
+        </div>
+
+
+        <div class="card-body">
+            <div class="table-responsive table-striped table-condensed">
+                <table class="table table-bordered" cellspacing="0">
+                    <thead class="text-center m-0 font-weight-bold text-info">
+                        <tr>
+                            <th class="text-center text-info">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="checkAll">
+                                    <label class="custom-control-label" for="checkAll">Select all</label>
+                                </div>
+                            </th>
+
+
+                            <th>No</th>
+                            <th>Product name</th>
+                            <th>Price</th>
+                            <th>CampStart</th>
+                            <th>CampEnd</th>
+                            <th>%</th>
+
+                            <th>Created</th>
+                            <th>Updated</th>
+                            <th>UpdatedBy</th>
+
+
+                            <th>Discountinued</th>
+                            <th>Stock</th>
+                            <th>Width</th>
+                            <th>Depth</th>
+                            <th>Height</th>
+                            <th>Weight</th>
+                            <th>Published</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @if (Model.SubCategory.Products != null)
+                        {
+                            @foreach (var product in Model.SubCategory.Products)
+                            {
+                                <tr>
+                                    <td class="custom-checkbox text-center">
+                                        <input type="checkbox" class="form-check-input flo" value="@product.Id">
+                                    </td>
+                                    <td>@product.ArticleNumber</td>
+                                    <td>@product.Name</td>
+                                    <td>@product.Price</td>
+                                    <td>@product.CampaignStartDate.ToShortDateString()</td>
+                                    <td>@product.CampaignEndDate.ToShortDateString()</td>
+                                    <td>@product.DiscountPercentage</td>
+
+                                    <td>@product.DateCreated.ToShortDateString()</td>
+                                    <td>@product.DateUpdated.ToShortDateString()</td>
+                                    <td>@product.ModifiedBy?.UserName</td>
+
+
+                                    <td>@product.Discontinued</td>
+                                    <td>@product.StockBalance</td>
+                                    <td>@product.Width</td>
+                                    <td>@product.Depth</td>
+                                    <td>@product.Height</td>
+                                    <td>@product.Weight</td>
+                                    <td>
+
+                                        @if (product.Published == true)
+                                        {
+                                            <form asp-controller="Product" asp-action="UnPublishProduct" method="post">
+
+                                                <input type="hidden" name="subcategoryId" value="@Model.SubCategory.Id" />
+                                                <input type="hidden" name="ProductId" value="@product.Id" />
+                                                <button class="btn btn-secondary" type="submit">Unpublish</button>
+                                            </form>
+                                        }
+                                        else if (product.Published == false)
+                                        {
+                                            <form asp-controller="Product" asp-action="PublishProduct" method="post">
+
+                                                <input type="hidden" name="subcategoryId" value="@Model.SubCategory.Id" />
+                                                <input type="hidden" name="ProductId" value="@product.Id" />
+                                                <button class="btn btn-info" type="submit">Publish</button>
+                                            </form>
+                                        }
+
+                                    </td>
+
+                                    <td class="text-center">
+
+                                        <button type="button" class="btn btn-danger btn-md open-DeleteProductModal" data-toggle="modal" data-id="@product.Id" title="Delete this item" href="#DeleteProductModal">Delete</button>
+
+                                        <a class="btn btn-warning align-items-center open-EditProductModal" asp-controller="Product" asp-action="Edit" asp-route-subcategoryId="@Model.SubCategory.Id" asp-route-productId="@product.Id" title="Edit this item">Edit</a>
+
+                                    </td>
+
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="6">No products</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="bulkDeleteForm" asp-controller="Product" asp-action="DeleteBulk" asp-route-SubCategoryId="@Model.SubCategory.Id" onsubmit="return confirm('Do you want to delete all products?')" method="post">
+                                <input type="hidden" id="productsIdToDelete" name="productsIdToDelete" value="" />
+                                <button type="submit" class="btn btn-danger" id="deleteBulk">Delete selected products</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+@*Form to Delete a Product with Modal Popup*@
+<div class="modal fade" id="DeleteProductModal" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="ModalDeleteProduct">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete Product</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <form asp-controller="Product" asp-action="Delete" asp-route-subcategoryId="@Model.SubCategory.Id" method="post" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input type="hidden" name="DeleteProductId" id="DeleteProductId" value="" />
+                        <h5>Are you sure you want to delete this Product ?</h5>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@*End Form *@
+
+
+@section Scripts {
+    <script>
+
+        //Delete Product
+        $(document).on("click", ".open-DeleteProductModal", function () {
+            var DeleteProductId = $(this).data('id');
+            $(".modal-body #DeleteProductId").val(DeleteProductId);
+        });
+
+
+        //DeleteBulk
+        $(document).ready(function () {
+
+            $('#checkAll').click(function () {
+                $('input:checkbox').prop('checked', this.checked);
+            });
+
+            $("#deleteBulk").on('click', function (e) {
+                getValueUsingParentTag();
+            });
+
+            function getValueUsingParentTag() {
+                var chkArray = [];
+
+                /* look for all checkboxes in Product/Index.cshtml and check if they are checked, and then take their values and push into an array */
+                $("input.flo:checked").each(function () {
+                    chkArray.push($(this).val());
+                });
+
+                /* join the array separated by the comma */
+                var selected;
+                selected = chkArray.join(',');
+
+                /* add selected value to hidden fields if it contains values */
+                if (selected.length > 0) {
+                    $("#productsIdToDelete").val(selected);
+                    //console.log(selected);
+                    var value = $("#productsIdToDelete").val();
+                }
+                else {
+                    alert("Select at least one product");
+                }
+            }
+        });
+
+
+    </script>
+}

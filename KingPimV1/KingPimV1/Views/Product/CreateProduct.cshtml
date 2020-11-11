@@ -1,0 +1,82 @@
+﻿@model Product
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="col-md-12">
+        <div class="form-area">
+            <form asp-action="CreateNewProduct" asp-controller="Product" method="post">
+                <br style="clear:both">
+                <h3 style="margin-bottom: 25px; text-align: center;">Create new product</h3>
+
+                <div class="form-group">
+                    <b> <label asp-for="ArticleNumber">Product Number</label></b>
+                    <input class="form-control" asp-for="ArticleNumber" />
+                </div>
+
+                <div class="form-group">
+                    <b> <label asp-for="Name">Product Name</label></b>
+                    <input class="form-control" asp-for="Name" />
+                </div>
+
+                <div class="form-group">
+                    <b> <label asp-for="Price">Price</label></b>
+                    <input class="form-control" asp-for="Price" />
+                </div>
+
+                <div class="form-group">
+                    <b> <label asp-for="CampaignStartDate">Campaign Start Date</label></b>
+                    <input class="form-control" asp-for="CampaignStartDate" />
+                </div>
+
+                <div class="form-group">
+                    <b> <label asp-for="CampaignEndDate">Campaign End Date</label></b>
+                    <input class="form-control" asp-for="CampaignEndDate" />
+                </div>
+
+                <div class="form-group">
+                    <b> <label asp-for="DiscountPercentage">Discount Percentage</label></b>
+                    <input class="form-control" asp-for="DiscountPercentage" />
+                </div>
+
+                <div class="form-group">
+                    <b> <label asp-for="Discontinued">Discontinued</label></b>
+                    <input class="form-control" asp-for="Discontinued" />
+                </div>
+
+                <div class="form-group">
+                    <b> <label asp-for="StockBalance">Stock Balance</label></b>
+                    <input class="form-control" asp-for="StockBalance" />
+                </div>
+
+                <div class="form-group">
+                    <b> <label asp-for="Width">Pack Width</label></b>
+                    <input class="form-control" asp-for="Width" />
+                </div>
+
+                <div class="form-group">
+                    <b> <label asp-for="Depth">Pack Depth</label></b>
+                    <input class="form-control" asp-for="Depth" />
+                </div>
+
+                <div class="form-group">
+                    <b> <label asp-for="Height">Pack Height</label></b>
+                    <input class="form-control" asp-for="Height" />
+                </div>
+
+                <div class="form-group">
+                    <b> <label asp-for="Weight">Pack Weight</label></b>
+                    <input class="form-control" asp-for="Weight" />
+                </div>
+
+                <input type="hidden" value="@Model.SubcategoryId" name="SubcategoryId" />
+
+                <button class="btn btn-primary btn-md" type="submit" style="margin-bottom: 25px" name="save" value="Save">Save product</button>
+                &nbsp;
+                <button class="btn btn-warning btn-md" type="submit" style="margin-bottom: 25px" name="cancel" value="Cancel">Cancel</button>
+            </form>
+        </div>
+    </div>
+</div>
